@@ -1,12 +1,6 @@
 // grab the room from the URL
-var room;
-var framed = window.self !== window.top;
-var hasroom = framed && document.referrer && document.referrer.split('?').length > 1;
-if (framed) {
-    room = document.referrer && document.referrer.split('?')[1];
-} else {
-    room = window.parent.location && window.parent.location.search.split('?')[1];
-}
+var room = "XPrizeCodex";
+var nick = Date.now();
 
 var nick;
 var avatar;
@@ -21,118 +15,6 @@ function track(name, info) {
     }
 }
 
-function setRoom(name) {
-    if (document.querySelector('form#createRoom')) {
-        document.querySelector('form#createRoom').remove();
-    }
-    document.getElementById('subtitle').textContent =  'Link to join: ' + (framed ? document.referrer + (hasroom ? '' : '?' + name) : window.parent.location.href);
-}
-
-function generateRoomName() {
-    var adjectives = ['autumn', 'hidden', 'bitter', 'misty', 'silent', 'empty', 'dry', 'dark', 'summer', 'icy', 'delicate', 'quiet', 'white', 'cool', 'spring', 'winter', 'patient', 'twilight', 'dawn', 'crimson', 'wispy', 'weathered', 'blue', 'billowing', 'broken', 'cold', 'falling', 'frosty', 'green', 'long', 'late', 'lingering', 'bold', 'little', 'morning', 'muddy', 'old', 'red', 'rough', 'still', 'small', 'sparkling', 'shy', 'wandering', 'withered', 'wild', 'black', 'young', 'holy', 'solitary', 'fragrant', 'aged', 'snowy', 'proud', 'floral', 'restless', 'divine', 'polished', 'ancient', 'purple', 'lively', 'nameless'];
-
-    var nouns = ['waterfall', 'river', 'breeze', 'moon', 'rain', 'wind', 'sea', 'morning', 'snow', 'lake', 'sunset', 'pine', 'shadow', 'leaf', 'dawn', 'glitter', 'forest', 'hill', 'cloud', 'meadow', 'sun', 'glade', 'bird', 'brook', 'butterfly', 'bush', 'dew', 'dust', 'field', 'fire', 'flower', 'firefly', 'feather', 'grass', 'haze', 'mountain', 'night', 'pond', 'darkness', 'snowflake', 'silence', 'sound', 'sky', 'shape', 'surf', 'thunder', 'violet', 'water', 'wildflower', 'wave', 'water', 'resonance', 'sun', 'wood', 'dream', 'cherry', 'tree', 'fog', 'frost', 'voice', 'paper', 'frog', 'smoke', 'star'];
-
-    var verbs = ['shakes', 'drifts', 'has stopped', 'struggles', 'hears', 'has passed', 'sleeps', 'creeps', 'flutters', 'fades', 'is falling', 'trickles', 'murmurs', 'warms', 'hides', 'jumps', 'is dreaming', 'sleeps', 'falls', 'wanders', 'waits', 'has risen', 'stands', 'dying', 'is drawing', 'singing', 'rises', 'paints', 'capturing', 'flying', 'lies', 'picked up', 'gathers in', 'invites', 'separates', 'eats', 'plants', 'digs into', 'has fallen', 'weeping', 'facing', 'mourns', 'tastes', 'breaking', 'shaking', 'walks', 'builds', 'reveals', 'piercing', 'craves', 'departing', 'opens', 'falling', 'confronts', 'keeps', 'breaking', 'is floating', 'settles', 'reaches', 'illuminates', 'closes', 'leaves', 'explodes', 'drawing'];
-
-    var preps = ['on', 'beside', 'in', 'beneath', 'above', 'under', 'by', 'over', 'against', 'near'];
-
-    var random = function (arr) {
-        return arr[Math.floor(Math.random()*arr.length)];
-    };
-
-    var prep = random(preps);
-    var adjective = random(adjectives);
-    var noun = random(nouns);
-    return [
-        prep,
-        'a',
-        adjective,
-        noun
-    ].join('-')
-     .replace(/\s/g, '-')
-     .replace(/-a-(a|e|i|o|u)/, '-an-$1');
-}
-
-function getSnapshot() {
-    return new Promise(function (resolve, reject) {
-        navigator.mediaDevices.getUserMedia({video:{width: 320, height:240}})
-        .then(function (stream) {
-            // UX: takes snapshot after 2 seconds.
-            var img = document.getElementById('snapshot');
-            theStream = stream;
-            var canvasEl = document.createElement('canvas');
-            var video = document.getElementById('snapshotvideo');
-            video.srcObject = stream;
-            video.autoplay = true;
-            video.onloadeddata = function() {
-                img.style.display = 'none';
-                video.style.display = 'block';
-                var wait = 3; // countdown
-                var countdown = function() {
-                    if (wait > 0) {
-                        document.getElementById('countdown').style.display = 'block';
-                        document.getElementById('countdown').textContent = wait;
-                        wait--;
-                        window.setTimeout(countdown, 1000);
-                        return;
-                    }
-                    document.getElementById('countdown').style.display = 'none';
-                    var w = 320;
-                    var h = 240;
-                    canvasEl.width = w;
-                    canvasEl.height = h;
-                    var context = canvasEl.getContext('2d');
-
-                    context.fillRect(0, 0, w, h);
-                    context.translate(w/2, h/2);
-                    context.scale(-1, 1);
-                    context.translate(w/-2, h/-2);
-                    context.drawImage(
-                        video,
-                        0, 0, w, h
-                    );
-                    video.style.display = 'none';
-                    stream.getTracks().forEach(function(track) {
-                        track.stop();
-                    });
-                    var url = canvasEl.toDataURL('image/jpg');
-                    var data = url.match(/data:([^;]*);(base64)?,([0-9A-Za-z+/]+)/);
-                    img.src = url;
-                    img.style.display = 'block';
-                    resolve(url);
-                };
-                countdown();
-            };
-        })
-        .catch(reject);
-    });
-}
-
-// if we have a camera, we can use it to take a snapshot
-// should happen on a button click
-document.getElementById('snapshotButton').onclick = function() {
-    document.querySelector('.local-controls').style.visibility = 'hidden';
-    var p;
-    p = getSnapshot();
-    p.then(function (dataurl) {
-       avatar = dataurl;
-       webrtc.sendToAll('avatar', {avatar: avatar});
-   })
-   .catch(function (err) {
-   });
-};
-
-// update nickname
-document.getElementById('nickInput').onkeydown = function(e) {
-    if (e.keyCode !== 13) return;
-    var el = document.getElementById('nickInput');
-    el.disabled = true;
-    nick = el.value;
-    nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
-    webrtc.sendToAll('nickname', {nick: nick});
-    return false;
-};
 
 function doJoin(room) {
     webrtc.startLocalVideo();
@@ -152,20 +34,7 @@ function doJoin(room) {
 }
 
 var queryGum = false;
-if (room) {
-    setRoom(room);
-    queryGum = true;
-} else {
-    room = generateRoomName();
-    document.querySelector('form#createRoom>button').disabled = false;
-    document.getElementById('createRoom').onsubmit = function () {
-        document.getElementById('createRoom').disabled = true;
-        document.querySelector('form#createRoom>button').textContent = 'Creating conference...';
-        room = room.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
-        doJoin(room);
-        return false; 
-    };
-}
+
 
 function GUM() {
     webrtc = new SimpleWebRTC({
@@ -189,9 +58,6 @@ function GUM() {
         localAudio.disabled = false;
         localAudio.volume = 0;
         //localAudio.srcObject = stream; 
-        if (hasCameras) {
-            document.querySelector('.local-controls').style.visibility = 'visible';
-        }
 
         var track = stream.getAudioTracks()[0];
         var btn = document.querySelector('.local .button-mute');
@@ -203,25 +69,16 @@ function GUM() {
     });
 
     webrtc.on('readyToCall', function () {
-        if (room) {
             webrtc.joinRoom(room, function (err, res) {
                 if (err) return;
                 window.setTimeout(function () {
-                    if (avatar) {
-                        webrtc.sendToAll('avatar', {avatar: avatar});
-                    }
-                    if (nick) {
-                        webrtc.sendToAll('nickname', {nick: nick});
-                    }
+                    webrtc.sendToAll('nickname', {nick: nick});
+                    webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+
                 }, 1000);
             });
-        }
     });
 
-    // working around weird simplewebrtc behaviour
-    webrtc.on('videoAdded', function (video, peer) {
-        document.querySelector('#container_' + webrtc.getDomId(peer) + '>div.remote-details').appendChild(video);
-    });
     // called when a peer is created
     webrtc.on('createdPeer', function (peer) {
         var remotes = document.getElementById('remotes');
@@ -244,7 +101,7 @@ function GUM() {
         // avatar image
         var avatar = document.createElement('img');
         avatar.className = 'avatar';
-        avatar.src = 'img/avatar-default.png';
+        avatar.src = 'img/male.png';
         d.appendChild(avatar);
 
         // audio element
@@ -354,12 +211,14 @@ function GUM() {
             hasCameras = cameras.length;
             var mics = devices.filter(function(device) { return device.kind === 'audioinput'; });
             if (mics.length) {
-                document.getElementById('requirements').style.display = 'none';
-                if (queryGum) webrtc.startLocalVideo();
-            } else {
-                document.getElementById('microphoneWarning').style.display = 'block';
-                document.querySelector('form#createRoom>button').disabled = true;
-            }
+                //document.getElementById('requirements').style.display = 'none';
+                //if (queryGum) webrtc.startLocalVideo();
+                webrtc.startLocalVideo();
+            } 
+            // else {
+            //     document.getElementById('microphoneWarning').style.display = 'block';
+            //     document.querySelector('form#createRoom>button').disabled = true;
+            // }
         });
     }
 }
