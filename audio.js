@@ -33,6 +33,16 @@ function doJoin(room) {
     });
 }
 
+document.getElementById('nickInput').onkeydown = function(e) {
+    if (e.keyCode !== 13) return;
+    var el = document.getElementById('nickInput');
+    el.disabled = true;
+    nick = el.value;
+    nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+    webrtc.sendToAll('nickname', {nick: nick});
+    return false;
+};
+
 var queryGum = false;
 
 
@@ -58,6 +68,8 @@ function GUM() {
         localAudio.disabled = false;
         localAudio.volume = 0;
         //localAudio.srcObject = stream; 
+        // var localNick = document.getElementById("nickInput")
+        // localNick.innerHTML = nick;
 
         var track = stream.getAudioTracks()[0];
         var btn = document.querySelector('.local .button-mute');
