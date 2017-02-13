@@ -1,6 +1,7 @@
 // grab the room from the URL
 var room = "XPrizeCodex";
 var nick = Date.now();
+var gender = 0;
 
 var nick;
 var avatar;
@@ -42,6 +43,19 @@ document.getElementById('nickInput').onkeydown = function(e) {
     webrtc.sendToAll('nickname', {nick: nick});
     return false;
 };
+
+document.getElementById('localAvatar').onclick = function(e){
+    if(gender){
+        gender = 0;
+        webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+        document.getElementById('localAvatar').src = "img/female.png";
+    }
+    else{
+       gender = 1;
+        webrtc.sendToAll('avatar', {avatar: "img/male.png"}); 
+        document.getElementById('localAvatar').src = "img/male.png";
+    }
+}
 
 var queryGum = false;
 
