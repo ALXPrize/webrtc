@@ -60,7 +60,7 @@ document.getElementById('localAvatar').onclick = function(e){
 var queryGum = false;
 
 
-function GUM() {
+function Start() {
     webrtc = new SimpleWebRTC({
         // we don't do video
         localVideoEl: '',
@@ -248,3 +248,13 @@ function GUM() {
         });
     }
 }
+
+var onMessage = function(e){
+    var pkg = JSON.parse(e.data);
+    if(pkg.type == "room"){
+        room = pkg.data;
+        Start();
+    }
+}
+
+window.addEventListener('message', onMessage);
