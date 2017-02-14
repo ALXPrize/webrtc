@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SimpleWebRTC Audio Demo</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="WebRTC, SimpleWebRTC, Talky, Talky.io">
+        <link rel="stylesheet" href="css/audio.css" />
+    </head>
+    <body onload='GUM()'>
+        <div class="content cf">
+
+            <section id="roomContainer" class="cf">
+                <h4 id="subtitle"></h4>
+
+                <div class='peerContainer local'>
+                    <div class="local-details">
+                        <input id="nickInput" placeholder="Add your name">
+                        <img id='localAvatar' class="avatar" src="img/male.png">
+                        <audio id="localAudio" controls oncontextmenu="return false;" disabled></audio>
+                        <a class="button button-small button-mute">Mute</a>
+                    </div>
+                    <div class="local-controls">
+                    </div>
+                </div>
+                <div id="remotes"></div>
+            </section>
+
+        </div>
+        <script src="audio.js"></script>
+        <script src="latest-v2.js"></script>
+    </body>
+</html>
