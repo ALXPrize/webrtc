@@ -99,7 +99,12 @@ function Start() {
                 if (err) return;
                 window.setTimeout(function () {
                     webrtc.sendToAll('nickname', {nick: nick});
-                    webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+                    if(gender = 0){
+                        webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+                    }
+                    else{
+                        webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+                    }
 
                 }, 1000);
             });
