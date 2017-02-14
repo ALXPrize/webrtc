@@ -8,7 +8,7 @@ var avatar;
 var hasCameras = false;
 
 var webrtc;
-
+var parentSrc = "";
 // for simplistic metrics gathering
 function track(name, info) {
     if (webrtc && webrtc.connection) {
@@ -95,19 +95,23 @@ function Start() {
     });
 
     webrtc.on('readyToCall', function () {
-            webrtc.joinRoom(room, function (err, res) {
-                if (err) return;
-                window.setTimeout(function () {
-                    webrtc.sendToAll('nickname', {nick: nick});
-                    if(gender == 0){
-                        webrtc.sendToAll('avatar', {avatar: "img/female.png"});
-                    }
-                    else{
-                        webrtc.sendToAll('avatar', {avatar: "img/male.png"});
-                    }
+        pkg = {};
+        pkg.type = "ready"
+        pkg.data = "webRTC Ready";
+        parent.postMessage(JSON.stringify(pkg),parentSrc );
+            // webrtc.joinRoom(room, function (err, res) {
+            //     if (err) return;
+            //     window.setTimeout(function () {
+            //         webrtc.sendToAll('nickname', {nick: nick});
+            //         if(gender == 0){
+            //             webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+            //         }
+            //         else{
+            //             webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+            //         }
 
-                }, 1000);
-            });
+            //     }, 1000);
+            // });
     });
 
     // called when a peer is created
@@ -265,6 +269,7 @@ var onMessage = function(e){
     var pkg = JSON.parse(e.data);
     if(pkg.type == "start"){
         room = pkg.data;
+        parentSrc = pkg.sender;
         Start();
         pkg.type = "ack"
         pkg.data = "Joined Room " + room;

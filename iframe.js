@@ -83,6 +83,9 @@ var Load = function() {
     var onMessage = function(e){
         var pkg = JSON.parse(e.data);
         console.log("iframe: " + pkg.data);
+        if(pkg.type == "ready"){
+            document.getElementById("rejoin").style.visibility = "visible";
+        }
     }
 
     window.addEventListener('message', onMessage);
