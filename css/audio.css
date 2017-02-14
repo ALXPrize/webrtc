@@ -293,7 +293,7 @@ hr {
 }
 
 #nickInput {
-  width: 100%;
+  width: 95%;
   padding: 3px 5px 5px;
   border: 1px solid transparent;
   font-size: 1.4em;
@@ -407,4 +407,16 @@ audio {
 
 .cf:after {
   clear: both;
+}
+
+.Room {
+  width: 100%;
+  padding: 3px 5px 5px;
+  border: 1px solid transparent;
+  font-size: 1.4em;
+  outline: none;
+}
+
+.Room:focus {
+  border-color: #74ddff;
 }
