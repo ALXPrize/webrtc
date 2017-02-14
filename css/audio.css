@@ -322,9 +322,10 @@ hr {
 }
 
 #remotes .peerContainer {
-  width: calc(50% - 2px);
+  width: 26%;
+  /*width: calc(50% - 2px);*/
   margin-top: 0;
-  margin-bottom: 6px;
+  /*margin-bottom: 6px;*/
   /*padding: 5px;*/
   float: left;
 }
