@@ -237,8 +237,14 @@ hr {
 }
 
 .local-details {
-  min-height: 208px;
+  /*min-height: 208px;
   margin-bottom: 15px;
+  padding: 5px;
+  position: relative;
+  border: 1px solid #e6eaed;*/
+
+  min-height: 183px;
+  margin-bottom: 10px;
   padding: 5px;
   position: relative;
   border: 1px solid #e6eaed;
@@ -297,7 +303,8 @@ hr {
 }
 
 #nickInput {
-  width: 93%;
+  /*width: 93%;*/
+  width: 128px;
   padding: 3px 5px 5px;
   border: 1px solid transparent;
   font-size: 1.4em;
