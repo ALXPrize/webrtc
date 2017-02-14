@@ -145,6 +145,13 @@ function Start() {
         mute.style.visibility = 'hidden';
         d.appendChild(mute);
 
+        if(gender == 0){
+            webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+        }
+        else{
+            webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+        }
+
         mute.onclick = function() {
           if (peer.videoEl.muted) { // unmute
             mute.className = 'button button-small button-mute';
