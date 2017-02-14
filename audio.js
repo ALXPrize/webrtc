@@ -99,7 +99,7 @@ function Start() {
                 if (err) return;
                 window.setTimeout(function () {
                     webrtc.sendToAll('nickname', {nick: nick});
-                    webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+                    webrtc.sendToAll('avatar', {avatar: "img/male.png"});
 
                 }, 1000);
             });
@@ -260,7 +260,14 @@ var onMessage = function(e){
     }
     else if(pkg.type == "room"){
         room = pkg.data;
-        webrtc.joinRoom(room);
+        webrtc.joinRoom(room, function (err, res) {
+                if (err) return;
+                window.setTimeout(function () {
+                    webrtc.sendToAll('nickname', {nick: nick});
+                    webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+
+                }, 1000);
+            });
         pkg.type = "ack"
         pkg.data = "Joined Room " + room;
         parent.postMessage(JSON.stringify(pkg), pkg.sender);
