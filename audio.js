@@ -272,10 +272,10 @@ var onMessage = function(e){
         parentSrc = pkg.sender;
         Start();
         pkg.type = "ack"
-        pkg.data = "Joined Room " + room;
+        pkg.data = "WebRTC Ready";
         parent.postMessage(JSON.stringify(pkg), pkg.sender);
     }
-    else if(pkg.type == "room"){
+    else if(pkg.type == "join"){
         room = pkg.data;
         webrtc.joinRoom(room, function (err, res) {
                 if (err) return;
