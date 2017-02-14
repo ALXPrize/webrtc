@@ -258,6 +258,18 @@ var onMessage = function(e){
         pkg.data = "Joined Room " + room;
         parent.postMessage(JSON.stringify(pkg), pkg.sender);
     }
+    else if(pkg.type == "leave"){
+        webrtc.leaveRoom();
+        pkg.type = "ack"
+        pkg.data = "Left Room " + room;
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
+    else if(pkg.type == "disconnect"){
+        webrtc.disconnect();
+        pkg.type = "ack"
+        pkg.data = "Disconnected";
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
 }
 
 window.addEventListener('message', onMessage);
