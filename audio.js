@@ -1,7 +1,7 @@
 // grab the room from the URL
 var room = "XPrizeCodex";
 var nick = Date.now();
-var gender = 0;
+var gender = 1;
 
 var nick;
 var avatar;
