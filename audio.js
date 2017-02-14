@@ -254,6 +254,9 @@ var onMessage = function(e){
     if(pkg.type == "room"){
         room = pkg.data;
         Start();
+        pkg.type = "ack"
+        pkg.data = "Joined Room " + room;
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
     }
 }
 
