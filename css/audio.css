@@ -253,6 +253,7 @@ hr {
 .nick {
   padding: 5px;
   min-height: 28px;
+  background-color: white;
 }
 
 .avatar {
