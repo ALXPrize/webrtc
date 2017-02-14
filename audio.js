@@ -39,7 +39,8 @@ document.getElementById('nickInput').onkeydown = function(e) {
     var el = document.getElementById('nickInput');
     el.disabled = true;
     nick = el.value;
-    nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+    //nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+    nick = nick.replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
     webrtc.sendToAll('nickname', {nick: nick});
     return false;
 };
