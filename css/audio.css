@@ -32,7 +32,9 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block
 }
-
+body{
+    margin: 0;
+}
 /*body {
   line-height: 1;
 }*/
@@ -304,10 +306,10 @@ hr {
 }
 
 #nickInput {
-  width: 93%;
+  width: 98%;
   /*width: 128px;*/
-  padding: 3px 5px 5px;
-  border: 1px solid transparent;
+  /*padding: 3px 5px 5px;
+  border: 1px solid transparent;*/
   font-size: 1.4em;
   outline: none;
 }
