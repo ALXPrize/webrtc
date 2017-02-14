@@ -202,20 +202,26 @@ function Start() {
         var peer = peers[0];
 
         // FIXME: also send current avatar and nick to newly joining participants
-        var container = document.getElementById('container_' + webrtc.getDomId(peer));
-        if (message.type === 'nickname') {
-            container.querySelector('.nick').textContent = message.payload.nick;
-        } else if (message.type === 'avatar') {
-            container.querySelector('.avatar').src = message.payload.avatar;
-        } else if (message.type === 'offer') {
-            // update things
-            if (nick) {
-                peer.send('nickname', {nick: nick});
-            }
-            if (avatar) {
-                peer.send('avatar', {avatar: avatar});
+        try{
+             var container = document.getElementById('container_' + webrtc.getDomId(peer));
+            if (message.type === 'nickname') {
+                container.querySelector('.nick').textContent = message.payload.nick;
+            } else if (message.type === 'avatar') {
+                container.querySelector('.avatar').src = message.payload.avatar;
+            } else if (message.type === 'offer') {
+                // update things
+                if (nick) {
+                    peer.send('nickname', {nick: nick});
+                }
+                if (avatar) {
+                    peer.send('avatar', {avatar: avatar});
+                }
             }
         }
+        catch(e){
+            console.log("Error on WebRTC message: " + e);
+        }
+       
     });
 
     // local p2p/ice failure
