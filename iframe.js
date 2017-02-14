@@ -74,7 +74,7 @@ var Load = function() {
 	// Add an event listener that will execute the sendMessage() function
 	// when the send button is clicked.
 	btn.addEventListener('click', sendMessage);
-    join.addEventListener('click', sendjoin);
+    join.addEventListener('click', sendJoin);
     leave.addEventListener('click', sendLeave);
     dicsonnect.addEventListener('click', sendDisconnect);
     stop.addEventListener('click', sendStop);
@@ -84,7 +84,7 @@ var Load = function() {
         var pkg = JSON.parse(e.data);
         console.log("iframe: " + pkg.data);
         if(pkg.type == "ready"){
-            document.getElementById("rejoin").style.visibility = "visible";
+            document.getElementById("join").style.visibility = "visible";
         }
     }
 
