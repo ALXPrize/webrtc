@@ -8,6 +8,7 @@ var Load = function() {
     var leave = document.getElementById('leave');
     var dicsonnect = document.getElementById('disconnect');
     var stop = document.getElementById('stop');
+    var restart = document.getElementById('restart');
 
 	// A function to handle sending messages.
 	function sendMessage(e) {
@@ -18,6 +19,15 @@ var Load = function() {
         var room = document.getElementById("room").value;
 		// Send a message with the text 'Hello Treehouse!' to the new window.
         receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+	}
+    function sendRestart(e) {
+		// Prevent any default browser behaviour.
+		e.preventDefault();
+
+        //Room Name
+        var room = document.getElementById("room").value;
+		// Send a message with the text 'Hello Treehouse!' to the new window.
+        receiver.postMessage(JSON.stringify({type: "restart",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
 	}
 
     function sendRejoin(e) {
@@ -68,6 +78,7 @@ var Load = function() {
     leave.addEventListener('click', sendLeave);
     dicsonnect.addEventListener('click', sendDisconnect);
     stop.addEventListener('click', sendStop);
+    restart.addEventListener('click', sendRestart);
 
     var onMessage = function(e){
         var pkg = JSON.parse(e.data);

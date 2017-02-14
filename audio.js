@@ -290,6 +290,12 @@ var onMessage = function(e){
         pkg.data = "Stopped Local Video";
         parent.postMessage(JSON.stringify(pkg), pkg.sender);
     }
+    else if(pkg.type == "restart"){
+        webrtc.startLocalVideo();
+        pkg.type = "ack"
+        pkg.data = "Stopped Local Video";
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
 }
 
 window.addEventListener('message', onMessage);
