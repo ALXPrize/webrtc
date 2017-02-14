@@ -284,6 +284,12 @@ var onMessage = function(e){
         pkg.data = "Disconnected";
         parent.postMessage(JSON.stringify(pkg), pkg.sender);
     }
+     else if(pkg.type == "stop"){
+        webrtc.stopLocalVideo();
+        pkg.type = "ack"
+        pkg.data = "Stopped Local Video";
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
 }
 
 window.addEventListener('message', onMessage);
