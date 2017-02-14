@@ -251,9 +251,16 @@ function Start() {
 
 var onMessage = function(e){
     var pkg = JSON.parse(e.data);
-    if(pkg.type == "room"){
+    if(pkg.type == "start"){
         room = pkg.data;
         Start();
+        pkg.type = "ack"
+        pkg.data = "Joined Room " + room;
+        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
+    else if(pkg.type == "room"){
+        room = pkg.data;
+        webrtc.joinRoom(room);
         pkg.type = "ack"
         pkg.data = "Joined Room " + room;
         parent.postMessage(JSON.stringify(pkg), pkg.sender);

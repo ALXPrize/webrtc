@@ -4,6 +4,7 @@ var Load = function() {
   
 	// Get a reference to the 'Send Message' button.
 	var btn = document.getElementById('join');
+    var rejoin = document.getElementById('rejoin');
     var leave = document.getElementById('leave');
     var dicsonnect = document.getElementById('disconnect');
 
@@ -15,7 +16,17 @@ var Load = function() {
         //Room Name
         var room = document.getElementById("room").value;
 		// Send a message with the text 'Hello Treehouse!' to the new window.
-        receiver.postMessage(JSON.stringify({type: "room",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+	}
+
+    function sendRejoin(e) {
+		// Prevent any default browser behaviour.
+		e.preventDefault();
+
+        //Room Name
+        var room = document.getElementById("room").value;
+		// Send a message with the text 'Hello Treehouse!' to the new window.
+        receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
 	}
 
     function sendLeave(e) {
@@ -41,6 +52,7 @@ var Load = function() {
 	// Add an event listener that will execute the sendMessage() function
 	// when the send button is clicked.
 	btn.addEventListener('click', sendMessage);
+    rejoin.addEventListener('click', sendRejoin);
     leave.addEventListener('click', sendLeave);
     dicsonnect.addEventListener('click', sendDisconnect);
 
