@@ -256,6 +256,8 @@ hr {
   padding: 5px;
   min-height: 28px;
   background-color: white;
+  text-align: center;
+  font-size: 1.4em;
 }
 
 .avatar {
@@ -307,6 +309,7 @@ hr {
 
 #nickInput {
   width: 98%;
+  text-align: center;
   /*width: 128px;*/
   /*padding: 3px 5px 5px;
   border: 1px solid transparent;*/
