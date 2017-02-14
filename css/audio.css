@@ -303,8 +303,8 @@ hr {
 }
 
 #nickInput {
-  /*width: 93%;*/
-  width: 128px;
+  width: 93%;
+  /*width: 128px;*/
   padding: 3px 5px 5px;
   border: 1px solid transparent;
   font-size: 1.4em;
@@ -323,8 +323,8 @@ hr {
 /* Remote streams */
 
 #remotes {
-  /*width: 65%;
-  padding-left: 20px;*/
+  width: 100%;
+  /*padding-left: 20px;*/
   float: left;
 }
 
