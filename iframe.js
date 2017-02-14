@@ -26,7 +26,7 @@ var Load = function() {
         //Room Name
         var room = document.getElementById("room").value;
 		// Send a message with the text 'Hello Treehouse!' to the new window.
-        receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        receiver.postMessage(JSON.stringify({type: "room",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
 	}
 
     function sendLeave(e) {
