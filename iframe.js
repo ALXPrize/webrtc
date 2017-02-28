@@ -18,7 +18,8 @@ var Load = function() {
         //Room Name
         var room = document.getElementById("room").value;
 		// Send a message with the text 'Hello Treehouse!' to the new window.
-        receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        // receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        receiver.postMessage(JSON.stringify({type: "start",data: room, sender: window.location.href}), 'http://127.0.0.1/~cclark/Sandbox/JaHOVA/JaHOVA/GTL_Git/XPrize/webrtc/webrtc.html');
 	}
     function sendRestart(e) {
 		// Prevent any default browser behaviour.
@@ -37,7 +38,8 @@ var Load = function() {
         //Room Name
         var room = document.getElementById("room").value;
 		// Send a message with the text 'Hello Treehouse!' to the new window.
-        receiver.postMessage(JSON.stringify({type: "join",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        // receiver.postMessage(JSON.stringify({type: "join",data: room, sender: window.location.href}), 'https://alxprize.github.io/webrtc/webrtc.html');
+        receiver.postMessage(JSON.stringify({type: "join",data: room, sender: window.location.href}), 'http://127.0.0.1/~cclark/Sandbox/JaHOVA/JaHOVA/GTL_Git/XPrize/webrtc/webrtc.html');
 	}
 
     function sendLeave(e) {
