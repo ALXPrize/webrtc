@@ -1,6 +1,6 @@
 var Load = function() {
 	// Get the window displayed in the iframe.
-	var receiver = document.getElementById('webrtc').contentWindow;
+	var receiver = document.getElementById('CodexCaller').contentWindow;
   
 	// Get a reference to the 'Send Message' button.
 	var btn = document.getElementById('start');
@@ -84,7 +84,7 @@ var Load = function() {
 
     var onMessage = function(e){
         var pkg = JSON.parse(e.data);
-        console.log("iframe: " + pkg.data);
+        //console.log("iframe: " + pkg.data);
         if(pkg.type == "ready"){
             document.getElementById("join").style.visibility = "visible";
         }

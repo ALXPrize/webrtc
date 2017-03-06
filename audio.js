@@ -1,3 +1,28 @@
+CodexPacket = function(e){
+    
+    //
+    //  Local Recv Types: onjoin, onclientjoin, onclose
+    //
+
+    this.type = "";
+    this.data = {};
+    this.sender = window.location.href;
+    this.receiver = "";
+    this.parent = "";
+
+    if(e){
+        var input = JSON.parse(e.data);
+        this.type = input.type.toLowerCase();
+        this.data = input.data;
+    }
+}
+CodexPacket.prototype.Serialize = function(){
+    return JSON.stringify(this);
+}
+CodexPacket.prototype.Send = function(){
+    parent.postMessage(this.Serialize(),this.receiver);
+}
+
 // grab the room from the URL
 var room = "XPrizeCodex";
 var nick = Date.now();
@@ -96,11 +121,17 @@ function Start() {
     });
 
     webrtc.on('readyToCall', function () {
-        pkg = {};
-        pkg.type = "ready"
-        pkg.data = "webRTC Ready";
-        room = "XPrize";
-        parent.postMessage(JSON.stringify(pkg),parentSrc );
+
+        var packet = new CodexPacket();
+        packet.type = "onstart"
+        packet.data.message = "WebRTC Ready";
+        packet.receiver = parentSrc;
+        packet.Send();
+        // pkg = {};
+        // pkg.type = "ready"
+        // pkg.data = "webRTC Ready";
+        // room = "XPrize";
+        // parent.postMessage(JSON.stringify(pkg),parentSrc );
         // webrtc.joinRoom(room, function (err, res) {
         //     if (err) return;
         //     window.setTimeout(function () {
@@ -275,57 +306,77 @@ function Start() {
 }
 
 var onMessage = function(e){
-    var pkg = JSON.parse(e.data);
+    console.log("Message: " + e.data);
+    var pkg = new CodexPacket(e);
+    
+
     if(pkg.type == "start"){
-        room = pkg.data;
+        room = pkg.data.room;
         parentSrc = pkg.sender;
-        Start();
-        pkg.type = "ack"
-        pkg.data = "WebRTC Ready";
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+        Start(pkg);
     }
     else if(pkg.type == "join"){
-        room = pkg.data;
+        room = pkg.data.room;
         webrtc.joinRoom(room, function (err, res) {
-                if (err) return;
-                window.setTimeout(function () {
-                    webrtc.sendToAll('nickname', {nick: nick});
-                    if(gender == 0){
-                        webrtc.sendToAll('avatar', {avatar: "img/female.png"});
-                    }
-                    else{
-                        webrtc.sendToAll('avatar', {avatar: "img/male.png"});
-                    }
+                var packet = new CodexPacket();
+                if (err){
+                    packet.type = "error";
+                    packet.data.cmd = "onjoin";
+                    packet.data.value = room;
+                    packet.receiver = pkg.sender;
+                    packet.Send();
+                    return;
+                }
+                else{
+                    packet.type = "onjoin"
+                    packet.data.message = "Joined Room " + room;
+                    packet.receiver = pkg.sender;
+                    packet.Send();
 
-                }, 1000);
+                    window.setTimeout(function () {
+                    webrtc.sendToAll('nickname', {nick: nick});
+                        if(gender == 0){
+                            webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+                        }
+                        else{
+                            webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+                        }
+
+                    }, 2000);
+                }
+                
             });
-        pkg.type = "ack"
-        pkg.data = "Joined Room " + room;
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+        
     }
     else if(pkg.type == "leave"){
         webrtc.leaveRoom();
-        pkg.type = "ack"
-        pkg.data = "Left Room " + room;
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+        var packet = new CodexPacket();
+        packet.type = "onleave"
+        packet.data.message = "Left Room " + room;
+        packet.receiver = pkg.sender;
+        packet.Send();
     }
     else if(pkg.type == "disconnect"){
         webrtc.disconnect();
-        pkg.type = "ack"
-        pkg.data = "Disconnected";
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+        var packet = new CodexPacket();
+        packet.type = "ondisconnect"
+        packet.data.message = "Disconnected";
+        packet.receiver = pkg.sender;
+        packet.Send();
     }
      else if(pkg.type == "stop"){
         webrtc.stopLocalVideo();
-        pkg.type = "ack"
-        pkg.data = "Stopped Local Video";
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+        var packet = new CodexPacket();
+        packet.type = "onstop"
+        packet.data.message = "Stopped";
+        packet.receiver = pkg.sender;
+        packet.Send();
     }
     else if(pkg.type == "restart"){
         webrtc.startLocalVideo();
-        pkg.type = "ack"
-        pkg.data = "Stopped Local Video";
-        parent.postMessage(JSON.stringify(pkg), pkg.sender);
+    }
+    else{
+        cosole.log("Unknown Packet Type: " + e.data);
     }
 }
 
