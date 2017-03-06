@@ -11,7 +11,7 @@ var Load = function() {
     var restart = document.getElementById('restart');
 
 	// A function to handle sending messages.
-	function sendMessage(e) {
+	function sendStart(e) {
 		// Prevent any default browser behaviour.
 		e.preventDefault();
 
@@ -75,7 +75,7 @@ var Load = function() {
 
 	// Add an event listener that will execute the sendMessage() function
 	// when the send button is clicked.
-	btn.addEventListener('click', sendMessage);
+	btn.addEventListener('click', sendStart);
     join.addEventListener('click', sendJoin);
     leave.addEventListener('click', sendLeave);
     dicsonnect.addEventListener('click', sendDisconnect);
