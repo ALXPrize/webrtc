@@ -100,20 +100,20 @@ function Start() {
         pkg.type = "ready"
         pkg.data = "webRTC Ready";
         room = "XPrize";
-        //parent.postMessage(JSON.stringify(pkg),parentSrc );
-        webrtc.joinRoom(room, function (err, res) {
-            if (err) return;
-            window.setTimeout(function () {
-                webrtc.sendToAll('nickname', {nick: nick});
-                if(gender == 0){
-                    webrtc.sendToAll('avatar', {avatar: "img/female.png"});
-                }
-                else{
-                    webrtc.sendToAll('avatar', {avatar: "img/male.png"});
-                }
+        parent.postMessage(JSON.stringify(pkg),parentSrc );
+        // webrtc.joinRoom(room, function (err, res) {
+        //     if (err) return;
+        //     window.setTimeout(function () {
+        //         webrtc.sendToAll('nickname', {nick: nick});
+        //         if(gender == 0){
+        //             webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+        //         }
+        //         else{
+        //             webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+        //         }
 
-            }, 1000);
-        });
+        //     }, 1000);
+        // });
 
     });
 
@@ -274,23 +274,6 @@ function Start() {
     }
 }
 
-function Load(){
-    Start();
-    // room =  "XPrize";
-    // webrtc.joinRoom(room, function (err, res) {
-    //             if (err) return;
-    //             window.setTimeout(function () {
-    //                 webrtc.sendToAll('nickname', {nick: nick});
-    //                 if(gender == 0){
-    //                     webrtc.sendToAll('avatar', {avatar: "img/female.png"});
-    //                 }
-    //                 else{
-    //                     webrtc.sendToAll('avatar', {avatar: "img/male.png"});
-    //                 }
-
-    //             }, 1000);
-    //         });
-}
 var onMessage = function(e){
     var pkg = JSON.parse(e.data);
     if(pkg.type == "start"){
