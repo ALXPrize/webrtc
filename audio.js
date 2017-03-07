@@ -59,16 +59,16 @@ function doJoin(room) {
     });
 }
 
-document.getElementById('nickInput').onkeydown = function(e) {
-    if (e.keyCode !== 13) return;
-    var el = document.getElementById('nickInput');
-    el.disabled = true;
-    nick = el.value;
-    //nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
-    nick = nick.replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
-    webrtc.sendToAll('nickname', {nick: nick});
-    return false;
-};
+// document.getElementById('nickInput').onkeydown = function(e) {
+//     if (e.keyCode !== 13) return;
+//     var el = document.getElementById('nickInput');
+//     el.disabled = true;
+//     nick = el.value;
+//     //nick = nick.toLowerCase().replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+//     nick = nick.replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+//     webrtc.sendToAll('nickname', {nick: nick});
+//     return false;
+// };
 
 document.getElementById('localAvatar').onclick = function(e){
     if(gender){
@@ -384,6 +384,24 @@ var onMessage = function(e){
     }
     else if(pkg.type == "restart"){
         webrtc.startLocalVideo();
+    }
+    else if(pkg.type == "avatar"){
+
+        //Get and set Name to peers
+        nick = pkg.data.name.replace(/\s/g, '-').replace(/[^A-Za-z0-9_\-]/g, '');
+        webrtc.sendToAll('nickname', {nick: nick});
+        document.getElementById('nickInput').innerHTML = nick;
+
+        //Get and set Gender to peers
+        gender = pkg.data.gender;
+        if(gender.toLowerCase() == 'male'){
+            document.getElementById('localAvatar').src = "img/male.png";
+            webrtc.sendToAll('avatar', {avatar: "img/male.png"});
+        }
+        else{
+            document.getElementById('localAvatar').src = "img/female.png";
+            webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+        }
     }
     else{
         cosole.log("Unknown Packet Type: " + e.data);
