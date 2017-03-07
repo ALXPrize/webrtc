@@ -70,18 +70,18 @@ function doJoin(room) {
 //     return false;
 // };
 
-document.getElementById('localAvatar').onclick = function(e){
-    if(gender){
-        gender = 0;
-        webrtc.sendToAll('avatar', {avatar: "img/female.png"});
-        document.getElementById('localAvatar').src = "img/female.png";
-    }
-    else{
-       gender = 1;
-        webrtc.sendToAll('avatar', {avatar: "img/male.png"}); 
-        document.getElementById('localAvatar').src = "img/male.png";
-    }
-}
+// document.getElementById('localAvatar').onclick = function(e){
+//     if(gender){
+//         gender = 0;
+//         webrtc.sendToAll('avatar', {avatar: "img/female.png"});
+//         document.getElementById('localAvatar').src = "img/female.png";
+//     }
+//     else{
+//        gender = 1;
+//         webrtc.sendToAll('avatar', {avatar: "img/male.png"}); 
+//         document.getElementById('localAvatar').src = "img/male.png";
+//     }
+// }
 
 var queryGum = false;
 
