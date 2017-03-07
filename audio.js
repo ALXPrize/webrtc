@@ -20,7 +20,7 @@ CodexPacket.prototype.Serialize = function(){
     return JSON.stringify(this);
 }
 CodexPacket.prototype.Send = function(){
-    parent.postMessage(this.Serialize(),this.receiver);
+    parent.postMessage(this.Serialize(),"*");
 }
 
 // grab the room from the URL
