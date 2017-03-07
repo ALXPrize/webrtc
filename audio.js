@@ -209,6 +209,11 @@ function Start() {
                 switch (state) {
                 case 'connected':
                 case 'completed':
+                    var packet = new CodexPacket();
+                    packet.type = "onclientjoin"
+                    packet.data.message = "Client Connected";
+                    packet.receiver = parentSrc;
+                    packet.Send();
                     //audio.srcObject = peer.stream;
                     mute.style.visibility = 'visible';
                     if (peer.firsttime) {
@@ -223,6 +228,11 @@ function Start() {
                     break;
                 case 'closed':
                     container.remove();
+                    var packet = new CodexPacket();
+                    packet.type = "onclientleave"
+                    packet.data.message = "Client Left";
+                    packet.receiver = parentSrc;
+                    packet.Send();
                     break;
                 }
             });
@@ -380,4 +390,10 @@ var onMessage = function(e){
     }
 }
 
+var Load = function(){
+    var packet = new CodexPacket();
+    packet.type = "oniframeload"
+    packet.data.message = "iframe Loaded";
+    parent.postMessage(packet.Serialize(), "*");
+}
 window.addEventListener('message', onMessage);

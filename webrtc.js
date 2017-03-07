@@ -33,7 +33,12 @@ CodexWebRTC = {
     iframe: "",
     Init: function(){
         CodexWebRTC.iframe = document.getElementById('CodexCaller').contentWindow;
-        window.addEventListener('message', CodexWebRTC.onMessage);
+    },
+    Hide: function(){
+        CodexWebRTC.iframe.style.display = 'none';
+    },
+    Show: function(){
+        CodexWebRTC.iframe.style.display = '';
     },
     Start: function(room){
         var pkt = new CodexPacket();
@@ -64,34 +69,60 @@ CodexWebRTC = {
         pkt.type = "restart";
         pkt.Send();
     },
+    oniframeLoad: function(){
+        if(CodexWebRTC.Callbacks.oniframeLoad)
+            CodexWebRTC.Callbacks.oniframeLoad(pkt);
+    },
     onStart: function(pkt){
-
+        if(CodexWebRTC.Callbacks.onStart)
+            CodexWebRTC.Callbacks.onStart(pkt);
     },
     onStop: function(pkt){
-
+        if(CodexWebRTC.Callbacks.onStop)
+            CodexWebRTC.Callbacks.onStop(pkt);
     },
     onJoin: function(pkt){
-
+        if(CodexWebRTC.Callbacks.onJoin)
+            CodexWebRTC.Callbacks.onJoin(pkt);
     },
     onClientJoin: function(pkt){
-
+        if(CodexWebRTC.Callbacks.onClientJoin)
+            CodexWebRTC.Callbacks.onClientJoin(pkt);
+    },
+    onClientLeave: function(pkt){
+        if(CodexWebRTC.Callbacks.onClientLeave)
+            CodexWebRTC.Callbacks.onClientLeave(pkt);
     },
     onLeave: function(){
-
+        if(CodexWebRTC.Callbacks.onLeave)
+            CodexWebRTC.Callbacks.onLeave(pkt);
     },
     onClose: function(pkt){
-
+        if(CodexWebRTC.Callbacks.onClose)
+            CodexWebRTC.Callbacks.onClose(pkt);
+    },
+    Callbacks: {
+        onStart: null,
+        onStop: null,
+        onJoin: null,
+        onClientJoin: null,
+        onClientLeave: null,
+        onLeave: null,
+        onClose: null,
+        oniframeLoad: null
     },
     onMessage: function(e){
         console.log("Message: " + e.data);
         var pkt = new CodexPacket(e);
         
-
         if(pkt.type == "onjoin"){
             CodexWebRTC.onJoin(pkt);
         }
         else if(pkt.type ==  "onclientjoin"){
             CodexWebRTC.onClientJoin(pkt);
+        }
+        else if(pkt.type ==  "onclientleave"){
+            CodexWebRTC.onClientLeave(pkt);
         }
         else if(pkt.type == "onleave"){
             CodexWebRTC.onLeave(pkt);
@@ -105,6 +136,9 @@ CodexWebRTC = {
         else if(pkt.type == "onstart"){
             CodexWebRTC.onStart(pkt);
         }
+        else if(pkt.type == "iframeload"){
+            CodexWebRTC.oniframeLoad(pkt);
+        }
         else if(pkt.type == "error"){
             console.log("ERROR: " + pkt.data.cmd + "/nValue: "+ pkt.data.value);
         }
@@ -113,6 +147,6 @@ CodexWebRTC = {
         }
     }
 }
-
+window.addEventListener('message', CodexWebRTC.onMessage);
 //CodexWebRTC.Init();
 
